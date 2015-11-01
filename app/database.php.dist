@@ -1,0 +1,12 @@
+<?php
+
+return [
+    'read' => [
+        'connector' => '',
+        'host'      => '',
+        'name'      => '',
+        'charset'   => 'utf8',
+        'user'      => '',
+        'password'  => '',
+    ],
+];

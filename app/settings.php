@@ -16,5 +16,8 @@ return [
             'name' => 'app',
             'path' => __DIR__ . '/../log/app.log',
         ],
+
+        // database settings
+        'database' => require_once __DIR__.'/database.php',
     ],
 ];

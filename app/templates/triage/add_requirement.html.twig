@@ -1,0 +1,81 @@
+{% extends "base.html.twig" %}
+
+{% block page_title %}New Requirement{% endblock %}
+
+{% block content %}
+    <form class="form-horizontal" action="{{ path_for('triage.requirement.record') }}" method="post">
+        <h1>Record Requirement</h1>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="story">Story</label>
+            <div class="col-md-6">
+                <input name="requirement[story]" id="story" class="form-control" type="text" autofocus required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="priority">Priority</label>
+            <div class="col-md-6">
+                <select class="form-control" name="requirement[priority]" id="priority" required>
+                    <option value="">-</option>
+                    <option value="must have">Must Have</option>
+                    <option value="should have">Should Have</option>
+                    <option value="could have">Could Have</option>
+                    <option value="wont have">Won't Have</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="theme">Theme</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    <label>
+                        <input name="requirement[theme]" id="theme" type="checkbox" value="1">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="">Estimate</label>
+            <div class="col-md-6">
+                <select class="form-control" name="requirement[estimate]" id="" required>
+                    <option value="">-</option>
+                    <option value="0">0</option>
+                    <option value="0.5">0.5</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="5">5</option>
+                    <option value="8">8</option>
+                    <option value="13">13</option>
+                    <option value="21">21</option>
+                    <option value="33">33</option>
+                    <option value="54">54</option>
+                    <option value="+">+</option>
+                    <option value="?">?</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="parent" class="col-md-2 control-label">Parent</label>
+            <div class="col-md-6">
+                <select name="requirement[parent]" class="form-control" id="parent">
+                    <option value="-">-</option>
+                {% for requirement in requirements %}
+                    <option value="{{ requirement.id }}">{{ requirement.story }}</option>
+                {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for=""></label>
+            <div class="col-md-6">
+                <button class="btn btn-primary pull-right">Record</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

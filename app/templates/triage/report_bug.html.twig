@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+
+{% block page_title %}Report A Bug{% endblock %}
+
+{% block content %}
+    <h1>Bug reporter</h1>
+    <form class="form-horizontal" action="{{ path_for('triage.bug.report') }}" method="post">
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="summary">Summary</label>
+            <div class="col-md-6">
+                <input name="bug[summary]" class="form-control" type="text" autofocus>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="expected">Expected</label>
+            <div class="col-md-6">
+                <textarea name="bug[expected]" class="form-control" id="expected" rows="10"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="actual">Actual</label>
+            <div class="col-md-6">
+                <textarea name="bug[actual]" class="form-control" id="actual" rows="10"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for=""></label>
+            <div class="col-md-6">
+                <button class="btn btn-primary pull-right">Report</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

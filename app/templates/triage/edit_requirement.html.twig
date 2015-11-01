@@ -1,0 +1,85 @@
+{% extends "base.html.twig" %}
+
+{% block page_title %}New Requirement{% endblock %}
+
+{% block content %}
+    <form class="form-horizontal" action="{{ path_for('triage.requirement.edit', {'id': requirement.id}) }}" method="post">
+
+        <input name="requirement[id]" type="hidden" value="{{ requirement.id }}">
+
+        <h1>Record Requirement</h1>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="story">Story</label>
+            <div class="col-md-6">
+                <input name="requirement[story]" id="story" class="form-control" type="text" value="{{ requirement.story }}" autofocus required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="priority">Priority</label>
+            <div class="col-md-6">
+                <select class="form-control" name="requirement[priority]" id="priority" required>
+                    <option value="" {{ requirement.priority == '' ? 'selected' }}>-</option>
+                    <option value="must have" {{ requirement.priority|lower == 'must have' ? 'selected' }}>Must Have</option>
+                    <option value="should have" {{ requirement.priority|lower == 'should have' ? 'selected' }}>Should Have</option>
+                    <option value="could have" {{ requirement.priority|lower == 'could have' ? 'selected' }}>Could Have</option>
+                    <option value="wont have" {{ requirement.priority|lower == 'wont have' ? 'selected' }}>Won't Have</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="theme">Theme</label>
+            <div class="col-md-6">
+                <div class="checkbox">
+                    <label>
+                        <input name="requirement[theme]" id="theme" type="checkbox" value="1" {{ requirement.is_a_theme == 1 ? 'checked' }}>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="">Estimate</label>
+            <div class="col-md-6">
+                <select class="form-control" name="requirement[estimate]" id="" required>
+                    <option value="">-</option>
+                    <option value="0" {{ requirement.estimate == '0' ? 'selected' }}>0</option>
+                    <option value="0.5" {{ requirement.estimate == '0.5' ? 'selected' }}>0.5</option>
+                    <option value="1" {{ requirement.estimate == '1' ? 'selected' }}>1</option>
+                    <option value="2" {{ requirement.estimate == '2' ? 'selected' }}>2</option>
+                    <option value="3" {{ requirement.estimate == '3' ? 'selected' }}>3</option>
+                    <option value="5" {{ requirement.estimate == '5' ? 'selected' }}>5</option>
+                    <option value="8" {{ requirement.estimate == '8' ? 'selected' }}>8</option>
+                    <option value="13" {{ requirement.estimate == '13' ? 'selected' }}>13</option>
+                    <option value="21" {{ requirement.estimate == '21' ? 'selected' }}>21</option>
+                    <option value="33" {{ requirement.estimate == '33' ? 'selected' }}>33</option>
+                    <option value="54" {{ requirement.estimate == '54' ? 'selected' }}>54</option>
+                    <option value="+" {{ requirement.estimate == '+' ? 'selected' }}>+</option>
+                    <option value="?" {{ requirement.estimate == '?' ? 'selected' }}>?</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="parent" class="col-md-2 control-label">Parent</label>
+            <div class="col-md-6">
+                <select name="requirement[parent]" class="form-control" id="parent">
+                    <option value="-">-</option>
+                {% for parent in requirements %}
+                    {#<option value="{{ requirement.id }}" {{ requirement. }}>{{ requirement.id ~ ": " ~ requirement.story }}</option>#}
+                    <option value="{{ parent.id }}">{{ parent.id ~ ": " ~ parent.story }}</option>
+                {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for=""></label>
+            <div class="col-md-6">
+                <button class="btn btn-success pull-right">Update</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

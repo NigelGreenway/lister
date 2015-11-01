@@ -2,4 +2,5 @@
 /log/*
 /vendor
 
+database.php
 composer.lock

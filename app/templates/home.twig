@@ -1,13 +1,36 @@
-<html>
-    <head>
-        <meta charset="utf-8"/>
-        <title>Slim 3</title>
-        <link href='//fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
-        <link href='{{ base_url() }}/css/style.css' rel='stylesheet' type='text/css'>
-    </head>
-    <body>
-        <h1>Slim</h1>
-        <div>a microframework for PHP</div>
-    </body>
-</html>
-        
+{% extends "base.html.twig" %}
+
+{% block page_title %}Welcome To Lister{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-offset-0">
+
+        <div class="col-md-4">
+            <a href="{{ path_for('triage.home') }}">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4 class="text-center">
+                            Requirements
+                        </h4>
+                        <h1 class="text-center">{{ data.requirements }}</h1>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ path_for('triage.home') }}?filter=bugs">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4 class="text-center">
+                            Bugs
+                        </h4>
+                        <h1 class="text-center">{{ data.bugs }}</h1>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+{% endblock %}
