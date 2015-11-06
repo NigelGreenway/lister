@@ -32,16 +32,17 @@ final class RecordRequirementAction
     {
         switch ($request->getMethod()) {
             case 'GET':
-                return $this->get($request, $response, $args);
+                return $this->get($response);
                 break;
             case 'POST':
-                return $this->post($request, $response, $args);
+                return $this->post($request);
                 break;
         }
     }
 
-    private function get(Request $request, Response $response, array $args = [])
-    {
+    private function get(
+        Response $response
+    ) {
         $this->logger->info("Record requirement page action dispatched");
 
         $q = $this->db->prepare("SELECT * FROM requirements WHERE is_a_theme = 1");
@@ -58,9 +59,7 @@ final class RecordRequirementAction
     }
 
     private function post(
-        Request  $request,
-        Response $response,
-        array    $args = []
+        Request  $request
     ) {
         $this->logger->info("A requirement has been recorded");
         $this->logger->info('Requirement Recorded', ['post' => json_encode($request->getParam('requirement'))]);
@@ -74,13 +73,27 @@ final class RecordRequirementAction
                     (:id, :story, :priority, :theme, :estimate, :parent, :date_recorded)
             ");
         $q->execute([
-            ':id' => $id = Uuid::uuid4(),
+            ':id' => $requirementId = Uuid::uuid4(),
             ':story' => $data['story'],
             ':priority' => $data['priority'],
             ':theme' => isset($data['theme']) === true ? 1 : 0,
             ':estimate' => $data['estimate'],
             ':parent' => $data['parent'] == '-' ? null : $data['parent'],
             ':date_recorded' => (new \DateTimeImmutable('now'))->format('Y-m-d H:i:s'),
+        ]);
+
+        $comment = $request->getParam('requirement_comments');
+        $q = $this
+            ->db
+            ->prepare("INSERT INTO requirement_comments
+                    (id, comment, requirement_id)
+                VALUES
+                    (:id, :comment, :requirement_id)
+            ");
+        $q->execute([
+            ':id' => $commentId = Uuid::uuid4(),
+            ':comment' => $comment,
+            ':requirement_id' => $requirementId,
         ]);
 
         $q = $this->db->prepare("INSERT INTO triage
@@ -91,10 +104,10 @@ final class RecordRequirementAction
         $q->execute([
             ':id' => Uuid::uuid4(),
             ':table_link' => 'requirement',
-            ':requirement_id'   => (string) $id,
+            ':requirement_id'   => (string) $requirementId,
         ]);
 
-        $this->flash->addMessage('success', 'Requirement has been recorded');
+        $this->flash->addMessage('success', 'Requirement has been recorded 1');
 
         header('Location:'.$this->router->pathFor('triage.requirement.record'));
         exit;

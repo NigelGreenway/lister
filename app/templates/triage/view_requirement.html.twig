@@ -1,0 +1,82 @@
+{% extends "base.html.twig" %}
+
+{% block page_title %}{{ requirement.story }}{% endblock %}
+
+{% block content %}
+
+<form class="form-horizontal" action="{{ path_for('triage.requirement.view', {'id':requirement.id}) }}" method="post">
+    <h1>
+        Record Requirement
+        <small>
+            <a href="{{ path_for('triage.requirement.edit', {'id': requirement.id}) }}">
+                <i class="glyphicon glyphicon-pencil small"></i>
+            </a>
+        </small>
+    </h1>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="story">Story</label>
+        <div class="col-md-6">
+            <p class="form-control-static">{{ requirement.story }}</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="priority">Priority</label>
+        <div class="col-md-6">
+            <p class="form-control-static">{{ requirement.priority }}</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="theme">Theme</label>
+        <div class="col-md-6">
+            <p class="form-control-static">{{ requirement.is_a_theme == 0 ? 'Nope' : 'Yeah' }}</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="">Estimate</label>
+        <div class="col-md-6">
+            <p class="form-control-static">{{ requirement.estimate }}</p>
+        </div>
+    </div>
+</form>
+
+<hr>
+
+<form class="form-horizontal" action="{{ path_for('triage.requirement.view', {'id': requirement.id}) }}" method="post">
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="comments">Add Comment</label>
+        <div class="col-md-6">
+            <textarea name="comment" class="form-control" id="commments" rows="4"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label" for=""></label>
+        <div class="col-md-3">
+            <button class="btn btn-success">Add comment</button>
+        </div>
+    </div>
+</form>
+
+<hr>
+
+<h3>Comments:</h3>
+
+<hr>
+
+{% for comment in comments %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Added on <i>{{ comment.date_recorded|date('y M D @ H:i') }}</i>
+        </div>
+        <div class="panel-body">
+            {{ comment.comment }}
+        </div>
+    </div>
+{% endfor %}
+
+
+{% endblock %}

@@ -18,6 +18,12 @@ $app->map(['GET', 'POST'], '/triage/requirements/record', 'App\Triage\Action\Rec
 
 $app->map(['GET', 'POST'], '/triage/requirements/edit/{id}', 'App\Triage\Action\EditRequirementAction:dispatch')
     ->setName('triage.requirement.edit');
+
+$app->map(['GET'], '/triage/requirements/archive/{id}', 'App\Triage\Action\ArchiveRequirementAction:dispatch')
+    ->setName('triage.requirement.archive');
+
+$app->map(['GET', 'POST'], '/triage/requirements/view/{id}', 'App\Triage\Action\ViewRequirementAction:dispatch')
+    ->setName('triage.requirement.view');
 ////
 // Bug management
 ////

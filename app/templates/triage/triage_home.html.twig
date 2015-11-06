@@ -18,22 +18,32 @@
                     <th><input type="text" class="form-control" placeholder="Task ID" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Type" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Summary" disabled></th>
+                    <th><input type="text" class="form-control" placeholder="Bug ID" disabled></th>
                 </tr>
             </thead>
             <tbody>
             {% for row in data %}
                 {% if row.table_link == 'requirement' %}
                     {% set type = 'info' %}
+                    {% set route_name = 'triage.requirement.view' %}
                 {% elseif row.table_link == 'bug' %}
                     {% set type = 'danger' %}
+                    {% set route_name = null %}
                 {% else %}
                     {% set type = 'warning' %}
+                    {% set route_name = null %}
                 {% endif %}
 
                 <tr class="{{ type }}">
-                    <td>{{ tiny(row.id) }}</td>
+                    <td>{{ row.id }}</td>
                     <td>{{ row.table_link|title }}</span></td>
                     <td>{{ row.summary }}</td>
+                    <td>
+                        {% if route_name is not null %}
+                            <a href="{{ path_for(route_name, {'id': row.link_id}) }}">View Requirement</a>
+                        {% else %}
+                            {{ row.id }}
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

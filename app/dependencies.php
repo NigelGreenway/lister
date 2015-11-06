@@ -15,9 +15,11 @@ $container['view'] = function ($c) {
     // Add extensions
     $view->addExtension(new Slim\Views\TwigExtension(
         $c->get('router'),
-        $c->get('request')->getUri(),
-        $c->get('flash')
+        $c->get('request')->getUri()
     ));
+    $view->addExtension(new \Custom\ListerTwigExtension(
+        $c->get('flash'))
+    );
     $view->addExtension(new Twig_Extension_Debug());
 
     return $view;
@@ -88,6 +90,13 @@ $container['App\Triage\Action\RecordRequirementAction'] = function ($c) {
         $c->get('router')
     );
 };
+$container['App\Triage\Action\ViewRequirementAction'] = function ($c) {
+    return new App\Triage\Action\ViewRequirementAction(
+        $c->get('view'),
+        $c->get('database.read'),
+        $c->get('router')
+    );
+};
 $container['App\Triage\Action\EditRequirementAction'] = function ($c) {
     return new App\Triage\Action\EditRequirementAction(
         $c->get('view'),
@@ -96,6 +105,16 @@ $container['App\Triage\Action\EditRequirementAction'] = function ($c) {
         $c->get('database.read')
     );
 };
+$container['App\Triage\Action\ArchiveRequirementAction'] = function ($c) {
+    return new App\Triage\Action\ArchiveRequirementAction(
+        $c->get('view'),
+        $c->get('logger'),
+        $c->get('flash'),
+        $c->get('database.read'),
+        $c->get('router')
+    );
+};
+
 $container['App\Triage\Action\ReportBugAction'] = function ($c) {
     return new App\Triage\Action\ReportBugAction(
         $c->get('view'),

@@ -3,7 +3,7 @@
 {% block page_title %}New Requirement{% endblock %}
 
 {% block content %}
-    <form class="form-horizontal" action="{{ path_for('triage.requirement.edit', {'id': requirement.id}) }}" method="post">
+    <form class="form-horizontal" action="{{ path_for('triage.requirement.edit', {'id': requirement.id}) }}" method="delete">
 
         <input name="requirement[id]" type="hidden" value="{{ requirement.id }}">
 
@@ -77,8 +77,12 @@
 
         <div class="form-group">
             <label class="col-md-2 control-label" for=""></label>
-            <div class="col-md-6">
-                <button class="btn btn-success pull-right">Update</button>
+            <div class="col-md-3">
+                <button class="btn btn-success">Update</button>
+            </div>
+            <div class="col-md-3 pull-right">
+                <a href="{{ path_for('triage.requirement.view', {'id': requirement.id}) }}" class="btn btn-danger">Cancel</a>
+                <a href="{{ path_for('triage.requirement.archive', {'id': requirement.id }) }}" class="btn btn-warning">Archive Requirement</a>
             </div>
         </div>
     </form>

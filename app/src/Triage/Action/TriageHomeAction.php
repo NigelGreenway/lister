@@ -25,20 +25,34 @@ final class TriageHomeAction
     {
         $this->logger->info("Triage home page action dispatched");
 
-        $q = $this->db->prepare("SELECT
-                id,
-                table_link,
-                IF (
-                    requirement_id IS NOT NULL,
-                    (SELECT r.story FROM requirements r WHERE r.id = requirement_id ),
-                    IF (
-                        bug_id IS NOT NULL,
-                        (SELECT b.summary FROM bugs b WHERE b.id = bug_id ),
-                        NULL
-                    )
-                ) as 'summary'
+        $q = $this->db->prepare("
+            SELECT
+                t.id,
+                t.table_link,
+                (
+                    CASE t.table_link
+                        WHEN 'requirement'
+                        THEN t.requirement_id
+                        ELSE t.bug_id
+                    END
+                ) AS link_id,
+                (
+                    CASE t.table_link
+                        WHEN 'requirement'
+                        THEN (SELECT r.story FROM requirements r WHERE r.id = t.requirement_id AND r.is_archived = 0)
+                        ELSE (SELECT b.summary FROM bugs b         WHERE b.id = t.bug_id AND b.is_archived = 0)
+                    END
+                ) AS summary,
+                (
+                    CASE t.table_link
+                        WHEN 'requirement'
+                        THEN (SELECT r.is_archived FROM requirements r WHERE r.id = t.requirement_id AND r.is_archived = 0)
+                        ELSE (SELECT b.is_archived FROM bugs b         WHERE b.id = t.bug_id AND b.is_archived = 0)
+                    END
+                ) AS is_archived
+
             FROM
-                triage
+                triage t
         ");
         $q->execute();
 

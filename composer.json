@@ -11,6 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
+            "Custom\\":"app/Custom",
             "App\\": "app/src"
         }
     },
